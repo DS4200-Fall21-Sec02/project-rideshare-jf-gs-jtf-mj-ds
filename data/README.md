@@ -1,6 +1,6 @@
 # Note about preliminary data upload
 
-We have a csv that is ~358MB. Thus, we are unable to upload the entire file at once. When creating our visualizations, we will upload seperate CSVs for the sub-visualizations. We will filter the original dataset to only include the necessary columns. In addition, we will only include Uber in our analysis to allow for a lower CSV size. We may elect to make seperate dashboards for Uber & Lyft. In this submission, we have uploaded a sample of our data, showing the possible columns for the first 15 rows. 
+We have established a single CSV which samples 75,000 data points from the overall data set. This sample has similar characteristics to the rest of the data set. However, because this is a sample, the characteristics may vary.
 
 
 # Put any data files in this folder
