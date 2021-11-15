@@ -74,7 +74,7 @@ d3.csv("data/all_vis.csv", function (row) {
   // -- hard code each of the days of the week's values
   var bar_xaxis = d3
     .scaleBand()
-    .domain(data.map((d) => d.Weekday))
+    .domain(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
     .range([0, width])
 
   svg1
