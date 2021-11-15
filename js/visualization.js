@@ -248,12 +248,16 @@ var svg3 = d3
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
 d3.csv("data/AvgSurgMult.csv", function (row) {
+  
   // format the data
   return {
     Weather: row.weather,
     Value: +row.value,
   }
 }).then((data) => {
+  
+  console.log(data);
+
   var bar_color = d3
     .scaleOrdinal()
     .domain(["Average", "Drizzle"])
@@ -269,8 +273,7 @@ d3.csv("data/AvgSurgMult.csv", function (row) {
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(bar_xaxis))
 
-  var maxY = 17
-  let yScale = d3.scaleLinear().domain([1, maxY]).range([height, 0])
+  let yScale = d3.scaleLinear().domain([1.0000, 1.040]).range([height, 0])
 
   svg3
     .append("g")
@@ -284,13 +287,13 @@ d3.csv("data/AvgSurgMult.csv", function (row) {
     .append("rect")
     .attr("class", "bar")
     .filter(function (d) {
-      return d.Weather == "Average" || d.weather == "Drizzle"
+      return (d.Weather == "Average" || d.Weather == "Drizzle");
     })
     .attr("x", function (d) {
       return bar_xaxis(d.Weather) + 10
     })
     .attr("y", function (d) {
-      return d.Value
+      return yScale(d.Value)
     })
     .attr("width", bar_xaxis.bandwidth() - 20)
     .attr("height", (d) => height - yScale(d.Value))
@@ -337,8 +340,7 @@ d3.csv("data/AvgPrice.csv", function (row) {
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(bar_xaxis))
 
-  var maxY = 2
-  let yScale = d3.scaleLinear().domain([16, maxY]).range([height, 0])
+  let yScale = d3.scaleLinear().domain([16, 17]).range([height, 0])
 
   svg4
     .append("g")
@@ -352,13 +354,13 @@ d3.csv("data/AvgPrice.csv", function (row) {
     .append("rect")
     .attr("class", "bar")
     .filter(function (d) {
-      return d.Weather == "Average" || d.weather == "Drizzle"
+      return d.Weather == "Average" || d.Weather == "Drizzle"
     })
     .attr("x", function (d) {
       return bar_xaxis(d.Weather) + 10
     })
     .attr("y", function (d) {
-      return d.Value
+      return yScale(d.Value)
     })
     .attr("width", bar_xaxis.bandwidth() - 20)
     .attr("height", (d) => height - yScale(d.Value))
