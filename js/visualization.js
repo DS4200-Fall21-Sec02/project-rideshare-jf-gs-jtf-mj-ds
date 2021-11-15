@@ -396,7 +396,26 @@ var svg6 = d3
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-d3.csv("data/all_vis.csv").then((data) => {
+d3.csv("data/all_vis.csv", function(row) {
+
+  // get weekday for each entry
+  const parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S")
+  d3Time = parseTime(row.datetime)
+
+  // format the data
+  return {
+    surge_multiplier: +row.surge_multiplier,
+    price: +row.price,
+    date: d3Time,
+    cab_type: row.cab_type,
+    id: row.id,
+    distance: +row.distance,
+  }
+
+}).then((data) => {
+
+
+
   // Scatterplot 1
   var xKey5 = "distance"
   var yKey5 = "price"
@@ -455,16 +474,14 @@ d3.csv("data/all_vis.csv").then((data) => {
     .style("opacity", 0.5)
 
   // Scatterplot 2
-  var xKey6 = "datetime"
+  var xKey6 = "date"
   var yKey6 = "surge_multiplier"
 
-  //TODO: Add datetime X axis
-  const parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S")
+  
   var dates = []
   for (let obj of data) {
-    dates.push(parseTime(obj.dates))
+    dates.push(obj.date)
   }
-  console.log(dates)
   let x6 = d3.scaleTime().domain(d3.extent(dates)).range([0, width])
 
   svg6
@@ -482,7 +499,7 @@ d3.csv("data/all_vis.csv").then((data) => {
     )
 
   //Add Y axis
-  let y6 = d3.scaleLinear().domain([1, 2]).range([height, 0])
+  let y6 = d3.scaleLinear().domain([0, 3]).range([height, 0])
 
   svg6
     .append("g")
@@ -506,10 +523,10 @@ d3.csv("data/all_vis.csv").then((data) => {
     .append("circle")
     .attr("id", (d) => d.id)
     .attr("cx", function (d) {
-      return x5(d[xKey6])
+      return x6(d[xKey6])
     })
     .attr("cy", function (d) {
-      return y5(d[yKey6])
+      return y6(d[yKey6])
     })
     .attr("r", 2)
     .style("fill", function (d) {
