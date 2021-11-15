@@ -257,9 +257,127 @@ d3.csv('data/all_vis.csv', function(row) {
 
 
 // SPACE FOR VIS 2: 2 BAR CHARTS
+var svg3 = d3
+  .select("#vis2")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv('data/AvgSurgMult.csv', function(row) {
+
+// format the data
+	return {
+		Weather: row.weather,
+		Value: +row.value
+
+	}
+
+
+	}).then((data) => {
+ var bar_color = d3
+  			.scaleOrdinal()
+ 			 .domain(['Average', 'Drizzle'])
+  			 .range(["#000000","#288BA8"]);
+
+  var bar_xaxis = d3
+						.scaleBand()
+						.domain(['Average', 'Drizzle'])
+						.range ([0, width]);
+
+	svg2.append("g")
+	      	.attr("transform", "translate(0," + height + ")")
+	      	.call(d3.axisBottom(bar_xaxis));
+
+	var maxY = 17
+	let yScale = d3.scaleLinear()
+	    				.domain([1, maxY])
+	    				.range([height, 0]);
+
+	svg2.append('g')
+	    	.attr("transform", "translate(" + (margin.left-60) + ",0)")
+     		.call(d3.axisLeft(yScale));
+
+  var bars = svg2.selectAll('.bar')
+  .data(data)
+  .enter().append('rect')
+  .attr('class', 'bar')
+  .filter(function(d) { return d.Weather == 'Average' || d.weather == 'Drizzle' })
+  .attr('x', function(d) {return bar_xaxis(d.Weather) + 10})
+  .attr('y',function(d) {return d.Value})
+  .attr('width', bar_xaxis.bandwidth() - 20)
+  .attr('height', d => height - yScale(d.Value))
+  .attr('fill', function(d) { return bar_color(d.Weather)})});
+
+  svg2.append('text')
+  		.attr('text-anchor', 'middle')
+      			.attr('x', width / 2)
+      			.attr('y', 10)
+      			.text('Average Surge Multiplier')
+      			.attr('font-weight', 700);
 
 
 
+var svg3 = d3
+  .select("#vis2b")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv('data/AvgPrice.csv', function(row) {
+
+// format the data
+	return {
+		Weather: row.weather,
+		Value: +row.value
+
+	}
+
+
+	}).then((data) => {
+ var bar_color = d3
+  			.scaleOrdinal()
+ 			 .domain(['Average', 'Drizzle'])
+  			 .range(["#000000","#288BA8"]);
+
+  var bar_xaxis = d3
+						.scaleBand()
+						.domain(['Average', 'Drizzle'])
+						.range ([0, width]);
+
+	svg2.append("g")
+	      	.attr("transform", "translate(0," + height + ")")
+	      	.call(d3.axisBottom(bar_xaxis));
+
+	var maxY = 2
+	let yScale = d3.scaleLinear()
+	    				.domain([16, maxY])
+	    				.range([height, 0]);
+
+	svg2.append('g')
+	    	.attr("transform", "translate(" + (margin.left-60) + ",0)")
+     		.call(d3.axisLeft(yScale));
+
+  var bars = svg2.selectAll('.bar')
+  .data(data)
+  .enter().append('rect')
+  .attr('class', 'bar')
+  .filter(function(d) { return d.Weather == 'Average' || d.weather == 'Drizzle' })
+  .attr('x', function(d) {return bar_xaxis(d.Weather) + 10})
+  .attr('y',function(d) {return d.Value})
+  .attr('width', bar_xaxis.bandwidth() - 20)
+  .attr('height', d => height - yScale(d.Value))
+  .attr('fill', function(d) { return bar_color(d.Weather)})});
+
+  svg2.append('text')
+  		.attr('text-anchor', 'middle')
+      			.attr('x', width / 2)
+      			.attr('y', 10)
+      			.text('Average Price')
+      			.attr('font-weight', 700);
 
 
 
