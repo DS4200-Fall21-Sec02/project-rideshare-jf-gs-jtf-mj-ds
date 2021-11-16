@@ -248,15 +248,13 @@ var svg3 = d3
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
 d3.csv("data/AvgSurgMult.csv", function (row) {
-  
   // format the data
   return {
     Weather: row.weather,
     Value: +row.value,
   }
 }).then((data) => {
-  
-  console.log(data);
+  console.log(data)
 
   var bar_color = d3
     .scaleOrdinal()
@@ -273,7 +271,7 @@ d3.csv("data/AvgSurgMult.csv", function (row) {
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(bar_xaxis))
 
-  let yScale = d3.scaleLinear().domain([1.0000, 1.040]).range([height, 0])
+  let yScale = d3.scaleLinear().domain([1.0, 1.04]).range([height, 0])
 
   svg3
     .append("g")
@@ -287,7 +285,7 @@ d3.csv("data/AvgSurgMult.csv", function (row) {
     .append("rect")
     .attr("class", "bar")
     .filter(function (d) {
-      return (d.Weather == "Average" || d.Weather == "Drizzle");
+      return d.Weather == "Average" || d.Weather == "Drizzle"
     })
     .attr("x", function (d) {
       return bar_xaxis(d.Weather) + 10
@@ -396,8 +394,15 @@ var svg6 = d3
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-d3.csv("data/all_vis.csv", function(row) {
+var svg7 = d3
+  .select("#vis3c")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
+d3.csv("data/all_vis.csv", function (row) {
   // get weekday for each entry
   const parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S")
   d3Time = parseTime(row.datetime)
@@ -410,12 +415,9 @@ d3.csv("data/all_vis.csv", function(row) {
     cab_type: row.cab_type,
     id: row.id,
     distance: +row.distance,
+    source: row.source,
   }
-
 }).then((data) => {
-
-
-
   // Scatterplot 1
   var xKey5 = "distance"
   var yKey5 = "price"
@@ -477,7 +479,6 @@ d3.csv("data/all_vis.csv", function(row) {
   var xKey6 = "date"
   var yKey6 = "surge_multiplier"
 
-  
   var dates = []
   for (let obj of data) {
     dates.push(obj.date)
@@ -488,6 +489,11 @@ d3.csv("data/all_vis.csv", function(row) {
     .append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x6))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-45)")
     .call((g) =>
       g
         .append("text")
@@ -533,6 +539,69 @@ d3.csv("data/all_vis.csv", function(row) {
       return color(d.cab_type)
     })
     .style("opacity", 0.5)
+
+  // Bar Chart
+  var dataNest = d3.group(data, (d) => d.source)
+  console.log(dataNest)
+
+  // Add X axis
+  let x = d3
+    .scaleBand()
+    .domain(data.map((d) => d.source))
+    .range([0, width])
+
+  svg7
+    .append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-20)")
+    .call((g) =>
+      g
+        .append("text")
+        .attr("x", width)
+        .attr("y", margin.bottom)
+        .attr("fill", "currentColor")
+        .attr("text-anchor", "end")
+        .text("Starting Location")
+    )
+
+  // Add Y axis
+  let y = d3
+    .scaleLinear()
+    .range([height, 0])
+    .domain([0, d3.max(dataNest, (d) => d[1].length)])
+  svg7
+    .append("g")
+    .call(d3.axisLeft(y))
+    .call((g) =>
+      g
+        .append("text")
+        .attr("x", -margin.left)
+        .attr("y", 10)
+        .attr("fill", "currentColor")
+        .attr("text-anchor", "start")
+        .text("Count")
+    )
+
+  // Add bars
+  let bars = svg7
+    .append("g")
+    .selectAll("rect")
+    .data(dataNest)
+    .join("rect")
+    .attr("transform", (d) => `translate(${x(d[0]) + x.bandwidth() / 4},0)`)
+    .attr("y", (d) => {
+      return y(d[1].length)
+    })
+    .attr("width", x.bandwidth() / 2)
+    .attr("height", (d) => height - y(d[1].length))
+    .style("fill", function (d) {
+      return color(d[0])
+    })
 })
 
 // TODO:
