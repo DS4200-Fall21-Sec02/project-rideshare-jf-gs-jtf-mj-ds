@@ -517,6 +517,7 @@ d3.csv("data/all_vis.csv", function (row) {
         .attr("y", 10)
         .attr("fill", "currentColor")
         .attr("text-anchor", "start")
+        .attr("transform", "rotate(-90)")
         .text("Surge Multiplier")
     )
 
