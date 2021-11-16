@@ -514,7 +514,7 @@ d3.csv("data/all_vis.csv", function (row) {
       g
         .append("text")
         .attr("x", -margin.left)
-        .attr("y", 10)
+        .attr("y", -30)
         .attr("fill", "currentColor")
         .attr("text-anchor", "start")
         .attr("transform", "rotate(-90)")
@@ -600,12 +600,8 @@ d3.csv("data/all_vis.csv", function (row) {
     })
     .attr("width", x.bandwidth() / 2)
     .attr("height", (d) => height - y(d[1].length))
-    .style("fill", function (d) {
-      return color(d[0])
-    })
+    .style("fill", '#000000')
 })
 
-// TODO:
-// Location to Count Bar Chart
 
 // END OF SPACE FOR VIS 3
