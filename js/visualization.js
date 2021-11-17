@@ -65,7 +65,7 @@ d3.csv("data/all_vis.csv", function (row) {
       "#000000",
       "#000000",
       "#000000",
-      "#D3D3D3",
+      "#000000",
       "#000000",
     ])
 
@@ -153,6 +153,26 @@ d3.csv("data/all_vis.csv", function (row) {
     .attr("fill", function (d) {
       return bar_color(d.Weekday)
     })
+    .on('mouseover', function(d,i) {
+
+      // change color on bars
+      d3.select(this).transition()
+        .duration('5')
+        .attr('fill', '#30D5C8');
+
+      //trigger drawing of new graph
+      draw_scatter(i.Weekday);
+
+    })
+    .on('mouseout', function(d,i) {
+
+      // change color on bars
+      d3.select(this).transition()
+        .duration('5')
+        .attr('fill', '#000000');
+
+    });
+   
 
   // add titles
   svg1
@@ -163,12 +183,11 @@ d3.csv("data/all_vis.csv", function (row) {
     .text("Average Surge Multiplier")
     .attr("font-weight", 700)
 
-  // scatter plot
-  // pseudo-code:
-  // - on hover,
-  // - clear the existing scatter plot
-  // - trigger the drawing of a scatter plot
-  // create Y axis
+
+  function draw_scatter(day) {
+
+  svg2.selectAll('*').remove();
+
   let yScale1b = d3.scaleLinear().domain([0, 100]).range([height, 0])
 
   // add y axis to SVG
@@ -210,7 +229,7 @@ d3.csv("data/all_vis.csv", function (row) {
     .attr("text-anchor", "middle")
     .attr("x", width / 2)
     .attr("y", 10)
-    .text("Friday")
+    .text(day)
     .attr("font-weight", 700)
 
   var myCircle1 = svg2
@@ -220,7 +239,7 @@ d3.csv("data/all_vis.csv", function (row) {
     .enter()
     .append("circle")
     .filter(function (d) {
-      return d.Weekday == "Fri"
+      return d.Weekday == day
     })
     .attr("id", (d) => d.id)
     .attr("cx", function (d) {
@@ -234,6 +253,17 @@ d3.csv("data/all_vis.csv", function (row) {
       return color(d.CabType)
     })
     .style("opacity", 0.5)
+
+      
+  }
+
+  // scatter plot
+  // pseudo-code:
+  // - on hover,
+  // - clear the existing scatter plot
+  // - trigger the drawing of a scatter plot
+  // create Y axis
+  
 })
 
 // END OF SPACE FOR VIS 1
