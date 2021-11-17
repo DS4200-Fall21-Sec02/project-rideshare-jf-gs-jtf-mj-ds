@@ -153,26 +153,17 @@ d3.csv("data/all_vis.csv", function (row) {
     .attr("fill", function (d) {
       return bar_color(d.Weekday)
     })
-    .on('mouseover', function(d,i) {
-
+    .on("mouseover", function (d, i) {
       // change color on bars
-      d3.select(this).transition()
-        .duration('5')
-        .attr('fill', '#30D5C8');
+      d3.select(this).transition().duration("5").attr("fill", "#30D5C8")
 
       //trigger drawing of new graph
-      draw_scatter(i.Weekday);
-
+      draw_scatter(i.Weekday)
     })
-    .on('mouseout', function(d,i) {
-
+    .on("mouseout", function (d, i) {
       // change color on bars
-      d3.select(this).transition()
-        .duration('5')
-        .attr('fill', '#000000');
-
-    });
-   
+      d3.select(this).transition().duration("5").attr("fill", "#000000")
+    })
 
   // add titles
   svg1
@@ -183,78 +174,74 @@ d3.csv("data/all_vis.csv", function (row) {
     .text("Average Surge Multiplier")
     .attr("font-weight", 700)
 
-
   function draw_scatter(day) {
+    svg2.selectAll("*").remove()
 
-  svg2.selectAll('*').remove();
+    let yScale1b = d3.scaleLinear().domain([0, 100]).range([height, 0])
 
-  let yScale1b = d3.scaleLinear().domain([0, 100]).range([height, 0])
+    // add y axis to SVG
+    svg2
+      .append("g")
+      .call(d3.axisLeft(yScale1b))
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", -margin.left - 10)
+          .attr("y", -40)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "start")
+          .attr("transform", "rotate(-90)")
+          .text("Price per Mile")
+      )
 
-  // add y axis to SVG
-  svg2
-    .append("g")
-    .call(d3.axisLeft(yScale1b))
-    .call((g) =>
-      g
-        .append("text")
-        .attr("x", -margin.left - 10)
-        .attr("y", -40)
-        .attr("fill", "currentColor")
-        .attr("text-anchor", "start")
-        .attr("transform", "rotate(-90)")
-        .text("Price per Mile")
-    )
+    // create X axis
+    let xScale = d3.scaleLinear().domain([0, 24]).range([0, width])
 
-  // create X axis
-  let xScale = d3.scaleLinear().domain([0, 24]).range([0, width])
+    // add x axis to SVG
+    svg2
+      .append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(xScale))
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", width)
+          .attr("y", margin.bottom - 4)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "end")
+          .text("24-Hour Time")
+      )
 
-  // add x axis to SVG
-  svg2
-    .append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(xScale))
-    .call((g) =>
-      g
-        .append("text")
-        .attr("x", width)
-        .attr("y", margin.bottom - 4)
-        .attr("fill", "currentColor")
-        .attr("text-anchor", "end")
-        .text("24-Hour Time")
-    )
+    //chart title
+    svg2
+      .append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", width / 2)
+      .attr("y", 10)
+      .text(day)
+      .attr("font-weight", 700)
 
-  //chart title
-  svg2
-    .append("text")
-    .attr("text-anchor", "middle")
-    .attr("x", width / 2)
-    .attr("y", 10)
-    .text(day)
-    .attr("font-weight", 700)
-
-  var myCircle1 = svg2
-    .append("g")
-    .selectAll("circle")
-    .data(data)
-    .enter()
-    .append("circle")
-    .filter(function (d) {
-      return d.Weekday == day
-    })
-    .attr("id", (d) => d.id)
-    .attr("cx", function (d) {
-      return xScale(d.Time)
-    })
-    .attr("cy", function (d) {
-      return yScale1b(d.Price / d.Distance)
-    })
-    .attr("r", 2)
-    .style("fill", function (d) {
-      return color(d.CabType)
-    })
-    .style("opacity", 0.5)
-
-      
+    var myCircle1 = svg2
+      .append("g")
+      .selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .filter(function (d) {
+        return d.Weekday == day
+      })
+      .attr("id", (d) => d.id)
+      .attr("cx", function (d) {
+        return xScale(d.Time)
+      })
+      .attr("cy", function (d) {
+        return yScale1b(d.Price / d.Distance)
+      })
+      .attr("r", 2)
+      .style("fill", function (d) {
+        return color(d.CabType)
+      })
+      .style("opacity", 0.5)
   }
 
   // scatter plot
@@ -263,7 +250,6 @@ d3.csv("data/all_vis.csv", function (row) {
   // - clear the existing scatter plot
   // - trigger the drawing of a scatter plot
   // create Y axis
-  
 })
 
 // END OF SPACE FOR VIS 1
@@ -486,7 +472,7 @@ d3.csv("data/all_vis.csv", function (row) {
     )
 
   // Add dots
-  var myCircle1 = svg5
+  var myCircle5 = svg5
     .append("g")
     .selectAll("circle")
     .data(data)
@@ -504,6 +490,19 @@ d3.csv("data/all_vis.csv", function (row) {
       return color(d.cab_type)
     })
     .style("opacity", 0.5)
+
+  // Define a brush
+  var brush1 = d3
+    .brush() // Add the brush feature using the d3.brush function
+    .extent([
+      [0, 0],
+      [width, height],
+    ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+    .on("start", clear)
+    .on("brush", updateChart1)
+
+  // Add brush to the svg
+  svg5.call(brush1)
 
   // Scatterplot 2
   var xKey6 = "date"
@@ -552,7 +551,7 @@ d3.csv("data/all_vis.csv", function (row) {
     )
 
   // Add dots
-  var myCircle2 = svg6
+  var myCircle6 = svg6
     .append("g")
     .selectAll("circle")
     .data(data)
@@ -570,6 +569,19 @@ d3.csv("data/all_vis.csv", function (row) {
       return color(d.cab_type)
     })
     .style("opacity", 0.5)
+
+  // Define a brush
+  var brush2 = d3
+    .brush() // Add the brush feature using the d3.brush function
+    .extent([
+      [0, 0],
+      [width, height],
+    ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+    .on("start", clear)
+    .on("brush", updateChart2)
+
+  // Add brush to the svg
+  svg6.call(brush2)
 
   // Bar Chart
   var dataNest = d3.group(data, (d) => d.source)
@@ -630,8 +642,65 @@ d3.csv("data/all_vis.csv", function (row) {
     })
     .attr("width", x.bandwidth() / 2)
     .attr("height", (d) => height - y(d[1].length))
-    .style("fill", '#000000')
-})
+    .style("fill", "#000000")
 
+  //Brushing Code---------------------------------------------------------------------------------------------
+
+  //Removes existing brushes from svg
+  function clear() {
+    svg5.call(brush1.move, null)
+    svg6.call(brush2.move, null)
+  }
+
+  //Is called when we brush on scatterplot #1
+  function updateChart1(brushEvent) {
+    extent = brushEvent.selection
+
+    // Check all the circles that are within the brush region in Scatterplot 1
+    myCircle5.classed("selected", function (d) {
+      return isBrushed(extent, x5(d.distance), y5(d.price))
+    })
+
+    // Select all the data points in Scatterplot 2 which have the same id as those selected in Scatterplot 1
+    myCircle6.classed("selected", function (d) {
+      return isBrushed(extent, x5(d.distance), y5(d.price))
+    })
+  }
+
+  //Is called when we brush on scatterplot #2
+  function updateChart2(brushEvent) {
+    extent = brushEvent.selection
+    var selectedRides = new Set()
+
+    // Check all the circles that are within the brush region in Scatterplot 2
+    myCircle6.classed("selected", function (d) {
+      if (isBrushed(extent, x6(d.date), y6(d.surge_multiplier))) {
+        selectedRides.add(d.source)
+        return true
+      }
+    })
+
+    // Select all the data points in Scatterplot 1 which have the same id as those selected in Scatterplot 2
+    myCircle5.classed("selected", function (d) {
+      return isBrushed(extent, x6(d.date), y6(d.surge_multiplier))
+    })
+
+    // Select bars in bar chart based on species selected in Scatterplot 2
+    bars.classed("selected", function (d) {
+      return selectedRides.has(d[0])
+    })
+  }
+
+  //Finds dots within the brushed region
+  function isBrushed(brush_coords, cx, cy) {
+    if (brush_coords === null) return
+
+    var x0 = brush_coords[0][0],
+      x1 = brush_coords[1][0],
+      y0 = brush_coords[0][1],
+      y1 = brush_coords[1][1]
+    return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1 // This return TRUE or FALSE depending on if the points is in the selected area
+  }
+})
 
 // END OF SPACE FOR VIS 3
