@@ -183,7 +183,6 @@ d3.csv("data/all_vis.csv", function (row) {
     .text("Average Surge Multiplier")
     .attr("font-weight", 700)
 
-
   function draw_scatter(day) {
 
   svg2.selectAll('*').remove();
