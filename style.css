@@ -27,7 +27,7 @@ h1, h2, h3 {
 rect.selected {
   opacity: 1 !important;
   stroke: red;
-  stroke-width: 2px;
+  stroke-width: 5px;
 }
 
 /* Style for selected marks (circles) */
