@@ -24,6 +24,21 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 
+rect.selected {
+  opacity: 1 !important;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+/* Style for selected marks (circles) */
+circle.selected {
+  fill: pink;
+  stroke: red;
+  opacity: .5;
+  r: 5;
+}
+
+
 .vis-svg {
   background-color: #f4f1f0;
 }

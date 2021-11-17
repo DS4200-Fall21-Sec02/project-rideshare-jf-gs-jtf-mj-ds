@@ -491,6 +491,7 @@ d3.csv("data/all_vis.csv", function (row) {
     })
     .style("opacity", 0.5)
 
+
   // Define a brush
   var brush1 = d3
     .brush() // Add the brush feature using the d3.brush function
@@ -654,17 +655,31 @@ d3.csv("data/all_vis.csv", function (row) {
 
   //Is called when we brush on scatterplot #1
   function updateChart1(brushEvent) {
-    extent = brushEvent.selection
+    extent = brushEvent.selection;
+    var selectedRides = new Set()
 
     // Check all the circles that are within the brush region in Scatterplot 1
     myCircle5.classed("selected", function (d) {
-      return isBrushed(extent, x5(d.distance), y5(d.price))
-    })
+      return isBrushed(extent, x5(d.distance), y5(d.price));
+    });
 
     // Select all the data points in Scatterplot 2 which have the same id as those selected in Scatterplot 1
     myCircle6.classed("selected", function (d) {
       return isBrushed(extent, x5(d.distance), y5(d.price))
     })
+
+    myCircle6.classed(".selected", function (d) {
+      if (isBrushed(extent, x5(d.distance), y5(d.price))) {
+        selectedRides.add(d.source)
+        return true
+      }
+    })
+
+    // Select bars in bar chart based on species selected in Scatterplot 2
+    bars.classed("selected", function (d) {
+      return selectedRides.has(d[0])
+    })
+
   }
 
   //Is called when we brush on scatterplot #2
@@ -673,7 +688,7 @@ d3.csv("data/all_vis.csv", function (row) {
     var selectedRides = new Set()
 
     // Check all the circles that are within the brush region in Scatterplot 2
-    myCircle6.classed("selected", function (d) {
+    myCircle6.classed(".selected", function (d) {
       if (isBrushed(extent, x6(d.date), y6(d.surge_multiplier))) {
         selectedRides.add(d.source)
         return true
@@ -681,7 +696,7 @@ d3.csv("data/all_vis.csv", function (row) {
     })
 
     // Select all the data points in Scatterplot 1 which have the same id as those selected in Scatterplot 2
-    myCircle5.classed("selected", function (d) {
+    myCircle5.classed(".selected", function (d) {
       return isBrushed(extent, x6(d.date), y6(d.surge_multiplier))
     })
 
@@ -693,7 +708,7 @@ d3.csv("data/all_vis.csv", function (row) {
 
   //Finds dots within the brushed region
   function isBrushed(brush_coords, cx, cy) {
-    if (brush_coords === null) return
+    if (brush_coords == null) return
 
     var x0 = brush_coords[0][0],
       x1 = brush_coords[1][0],
