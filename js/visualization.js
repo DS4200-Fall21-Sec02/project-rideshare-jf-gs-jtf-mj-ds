@@ -27,6 +27,14 @@ var svg2 = d3
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
+var svg1a = d3
+  .select("#vis1a")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
 var color = d3
   .scaleOrdinal()
   .domain(["Uber", "Lyft"])
@@ -55,6 +63,41 @@ d3.csv("data/all_vis.csv", function (row) {
 }).then((data) => {
   //print data to log
   console.log(data.slice(0, 10))
+
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+  // add options to the button
+  d3.select("#selectButton1")
+  	.selectAll('myOptions')
+  	.data(days)
+  	.enter()
+  		.append('option')
+  		.text(function(d) {return d;})
+  		.attr('value', function(d) {
+  			draw_scatter1('Sun')
+  			return d;})
+  
+  // add listener
+  d3.select('#selectButton1')
+  	.on('change', function(d){
+  			draw_scatter1(this.value)
+  		})
+
+  // add options to the button
+  d3.select("#selectButton2")
+  	.selectAll('myOptions')
+  	.data(days)
+  	.enter()
+  		.append('option')
+  		.text(function(d) {return d;})
+  		.attr('value', function(d) {
+  			draw_scatter2('Sun')
+  			return d;})
+
+  d3.select('#selectButton2')
+  	.on('change', function(d){
+  			draw_scatter2(this.value)
+  		})
 
   var bar_color = d3
     .scaleOrdinal()
@@ -153,18 +196,7 @@ d3.csv("data/all_vis.csv", function (row) {
     .attr("fill", function (d) {
       return bar_color(d.Weekday)
     })
-    .on("mouseover", function (d, i) {
-      // change color on bars
-      d3.select(this).transition().duration("5").attr("fill", "#30D5C8")
-
-      //trigger drawing of new graph
-      draw_scatter(i.Weekday)
-    })
-    .on("mouseout", function (d, i) {
-      // change color on bars
-      d3.select(this).transition().duration("5").attr("fill", "#000000")
-    })
-
+   
   // add titles
   svg1
     .append("text")
@@ -174,7 +206,77 @@ d3.csv("data/all_vis.csv", function (row) {
     .text("Average Surge Multiplier")
     .attr("font-weight", 700)
 
-  function draw_scatter(day) {
+  function draw_scatter1(day) {
+    svg1a.selectAll("*").remove()
+
+    let yScale1b = d3.scaleLinear().domain([0, 100]).range([height, 0])
+
+    // add y axis to SVG
+    svg1a
+      .append("g")
+      .call(d3.axisLeft(yScale1b))
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", -margin.left - 10)
+          .attr("y", -40)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "start")
+          .attr("transform", "rotate(-90)")
+          .text("Price per Mile")
+      )
+
+    // create X axis
+    let xScale = d3.scaleLinear().domain([0, 24]).range([0, width])
+
+    // add x axis to SVG
+    svg1a
+      .append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(xScale))
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", width)
+          .attr("y", margin.bottom - 4)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "end")
+          .text("24-Hour Time")
+      )
+
+    //chart title
+    svg1a
+      .append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", width / 2)
+      .attr("y", 10)
+      .text(day)
+      .attr("font-weight", 700)
+
+    var myCircle1 = svg1a
+      .append("g")
+      .selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .filter(function (d) {
+        return d.Weekday == day
+      })
+      .attr("id", (d) => d.id)
+      .attr("cx", function (d) {
+        return xScale(d.Time)
+      })
+      .attr("cy", function (d) {
+        return yScale1b(d.Price / d.Distance)
+      })
+      .attr("r", 2)
+      .style("fill", function (d) {
+        return color(d.CabType)
+      })
+      .style("opacity", 0.5)
+  }
+
+function draw_scatter2(day) {
     svg2.selectAll("*").remove()
 
     let yScale1b = d3.scaleLinear().domain([0, 100]).range([height, 0])
@@ -243,7 +345,6 @@ d3.csv("data/all_vis.csv", function (row) {
       })
       .style("opacity", 0.5)
   }
-
   // scatter plot
   // pseudo-code:
   // - on hover,
