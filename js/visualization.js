@@ -851,4 +851,3 @@ d3.csv("data/all_vis.csv", function (row) {
 })
 
 // END OF SPACE FOR VIS 3
-
