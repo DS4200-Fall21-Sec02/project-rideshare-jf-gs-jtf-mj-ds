@@ -364,23 +364,69 @@ var svg3 = d3
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-d3.csv("data/AvgSurgMult.csv", function (row) {
+  var svg4 = d3
+  .select("#vis2b")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+
+d3.csv("data/vis2.csv", function (row) {
   // format the data
   return {
     Weather: row.weather,
-    Value: +row.value,
+    Price: +row.price,
+    Surge: +row.surge
   }
 }).then((data) => {
   console.log(data)
 
+    const weathers = ["MostlyCloudy", "Clear", "Overcast", "Drizzle", 
+    "PartlyCloudy", "LightRain", "Rain", "PossibleDrizzle", "Foggy"]
+
+
+      // add options to the button
+  d3.select("#selectButton3")
+    .selectAll('myOptions')
+    .data(weathers)
+    .enter()
+      .append('option')
+      .text(function(d) {return d;})
+      .attr('value', function(d) {
+        draw_bar2('MostlyCloudy')
+        return d;})
+
+  
+  // add listener
+  d3.select('#selectButton3')
+    .on('change', function(d){
+        console.log(typeof this.value)
+        draw_bar2(this.value)
+
+      })
+
+
+ 
+
+function draw_bar2(w) {
   var bar_color = d3
     .scaleOrdinal()
-    .domain(["Average", "Drizzle"])
-    .range(["#000000", "#288BA8"])
+    .domain(["Average", "MostlyCloudy", "Clear", "Overcast", "Drizzle", 
+    "PartlyCloudy", "LightRain", "Rain", "PossibleDrizzle", "Foggy"])
+    .range(["#000000", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8"])
 
-  var bar_xaxis = d3
+  svg3.selectAll("*").remove()
+  svg3.selectAll("axis").remove();
+
+  svg4.selectAll("*").remove()
+  svg4.selectAll("axis").remove();
+
+
+ var bar_xaxis = d3
     .scaleBand()
-    .domain(["Average", "Drizzle"])
+    .domain(["Average", w])
     .range([0, width])
 
   svg3
@@ -402,65 +448,39 @@ d3.csv("data/AvgSurgMult.csv", function (row) {
     .append("rect")
     .attr("class", "bar")
     .filter(function (d) {
-      return d.Weather == "Average" || d.Weather == "Drizzle"
+      return d.Weather == "Average" || d.Weather == w
     })
     .attr("x", function (d) {
       return bar_xaxis(d.Weather) + 10
     })
     .attr("y", function (d) {
-      return yScale(d.Value)
+      return yScale(d.Surge)
     })
     .attr("width", bar_xaxis.bandwidth() - 20)
-    .attr("height", (d) => height - yScale(d.Value))
+    .attr("height", (d) => height - yScale(d.Surge))
     .attr("fill", function (d) {
       return bar_color(d.Weather)
     })
-})
 
-svg3
-  .append("text")
+  svg3.append("text")
   .attr("text-anchor", "middle")
   .attr("x", width / 2)
   .attr("y", 10)
   .text("Average Surge Multiplier")
   .attr("font-weight", 700)
 
-var svg4 = d3
-  .select("#vis2b")
-  .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
-d3.csv("data/AvgPrice.csv", function (row) {
-  // format the data
-  return {
-    Weather: row.weather,
-    Value: +row.value,
-  }
-}).then((data) => {
-  var bar_color = d3
-    .scaleOrdinal()
-    .domain(["Average", "Drizzle"])
-    .range(["#000000", "#288BA8"])
-
-  var bar_xaxis = d3
-    .scaleBand()
-    .domain(["Average", "Drizzle"])
-    .range([0, width])
 
   svg4
     .append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(bar_xaxis))
 
-  let yScale = d3.scaleLinear().domain([16, 17]).range([height, 0])
+  let yScale2 = d3.scaleLinear().domain([16, 17]).range([height, 0])
 
   svg4
     .append("g")
     .attr("transform", "translate(" + (margin.left - 60) + ",0)")
-    .call(d3.axisLeft(yScale))
+    .call(d3.axisLeft(yScale2))
 
   var bars = svg4
     .selectAll(".bar")
@@ -469,20 +489,21 @@ d3.csv("data/AvgPrice.csv", function (row) {
     .append("rect")
     .attr("class", "bar")
     .filter(function (d) {
-      return d.Weather == "Average" || d.Weather == "Drizzle"
+      return d.Weather == "Average" || d.Weather == w
     })
     .attr("x", function (d) {
       return bar_xaxis(d.Weather) + 10
     })
     .attr("y", function (d) {
-      return yScale(d.Value)
+      return yScale2(d.Price)
     })
     .attr("width", bar_xaxis.bandwidth() - 20)
-    .attr("height", (d) => height - yScale(d.Value))
+    .attr("height", (d) => height - yScale2
+      (d.Price))
     .attr("fill", function (d) {
       return bar_color(d.Weather)
     })
-})
+
 
 svg4
   .append("text")
@@ -491,6 +512,16 @@ svg4
   .attr("y", 10)
   .text("Average Price")
   .attr("font-weight", 700)
+
+}
+ 
+})
+
+
+
+
+
+
 
 // END OF SPACE FOR VIS 2
 
@@ -820,3 +851,4 @@ d3.csv("data/all_vis.csv", function (row) {
 })
 
 // END OF SPACE FOR VIS 3
+
