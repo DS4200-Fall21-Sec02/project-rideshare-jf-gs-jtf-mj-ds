@@ -382,12 +382,13 @@ d3.csv("data/vis2.csv", function (row) {
   }
 }).then((data) => {
   console.log(data)
-
+  
+  //weather options that will be displayed in the drop down
     const weathers = ["MostlyCloudy", "Clear", "Overcast", "Drizzle", 
     "PartlyCloudy", "LightRain", "Rain", "PossibleDrizzle", "Foggy"]
 
 
-      // add options to the button
+      // add options to the button, it will start on mostly cloudy
   d3.select("#selectButton3")
     .selectAll('myOptions')
     .data(weathers)
@@ -399,7 +400,7 @@ d3.csv("data/vis2.csv", function (row) {
         return d;})
 
   
-  // add listener
+  // add listener to the select button
   d3.select('#selectButton3')
     .on('change', function(d){
         console.log(typeof this.value)
@@ -410,13 +411,17 @@ d3.csv("data/vis2.csv", function (row) {
 
  
 
+ //draw the correct bar graph
 function draw_bar2(w) {
+  
+  //bar colors .. all will be blue except the average which will be black
   var bar_color = d3
     .scaleOrdinal()
     .domain(["Average", "MostlyCloudy", "Clear", "Overcast", "Drizzle", 
     "PartlyCloudy", "LightRain", "Rain", "PossibleDrizzle", "Foggy"])
     .range(["#000000", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8"])
 
+  //clear old data and axis
   svg3.selectAll("*").remove()
   svg3.selectAll("axis").remove();
 
@@ -424,23 +429,29 @@ function draw_bar2(w) {
   svg4.selectAll("axis").remove();
 
 
+  //create x-axis (same for both graphs)
  var bar_xaxis = d3
     .scaleBand()
     .domain(["Average", w])
     .range([0, width])
 
+ //attach x-axis
   svg3
     .append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(bar_xaxis))
 
+  
+  //create and attach y axis
   let yScale = d3.scaleLinear().domain([1.0, 1.04]).range([height, 0])
-
+ 
+  
   svg3
     .append("g")
     .attr("transform", "translate(" + (margin.left - 60) + ",0)")
     .call(d3.axisLeft(yScale))
 
+  //create bars for the surge multiplier graph, filtering by weather condition, where w is the user selected weather condition
   var bars = svg3
     .selectAll(".bar")
     .data(data)
@@ -462,6 +473,7 @@ function draw_bar2(w) {
       return bar_color(d.Weather)
     })
 
+  //add a title to the surge multiplier graph
   svg3.append("text")
   .attr("text-anchor", "middle")
   .attr("x", width / 2)
@@ -469,12 +481,14 @@ function draw_bar2(w) {
   .text("Average Surge Multiplier")
   .attr("font-weight", 700)
 
-
+  
+//append the x-axis to the price graph
   svg4
     .append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(bar_xaxis))
 
+  //create and attach the y-axis to the price graph
   let yScale2 = d3.scaleLinear().domain([16, 17]).range([height, 0])
 
   svg4
@@ -482,6 +496,7 @@ function draw_bar2(w) {
     .attr("transform", "translate(" + (margin.left - 60) + ",0)")
     .call(d3.axisLeft(yScale2))
 
+  //draw bars for the price graph, filtering by the correct weather condition, where w is the user selected condition
   var bars = svg4
     .selectAll(".bar")
     .data(data)
@@ -504,7 +519,7 @@ function draw_bar2(w) {
       return bar_color(d.Weather)
     })
 
-
+//add a title to the price graph
 svg4
   .append("text")
   .attr("text-anchor", "middle")
