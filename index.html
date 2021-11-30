@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
 
     <!-- Title -->
-    <title>Project Team ##: Topic, DS4200 F21</title>
+    <title>Trends in Rideshare Demand, DS4200 F21</title>
 
     <!-- CSS Styling -->
     <link rel="stylesheet" href="style.css" />
@@ -47,11 +47,11 @@
 
     <!-- Writeup -->
     <div class="content-column">
-      <h1>Project Team ##: Topic, DS4200 F21</h1>
+      <h1>Trends in Rideshare Demand, DS4200 F21</h1>
 
       <p>
-        <strong>Student One</strong>, <strong>Student Two</strong>,
-        <strong>Student Three</strong>
+        <strong>Justin Flodman</strong>, <strong>Garrin Shieh</strong>,
+        <strong>Maya Janicki</strong>, <strong>Danielle Siino</strong>, <strong>J.T. Fallon</strong>
       </p>
 
       <p>
@@ -72,23 +72,30 @@
 
       <h1>Abstract</h1>
 
-      <p>Replace with your paper abstract.</p>
+      <p>Uber and Lyft have become an important piece of the Boston transportation network. Using data from a simulation with nearly 700,000 rides, we visualize major trends in ridesharing. In addition, we analyze the impact that temperature and other weather conditions have on the network. These visualizations are intended to inform riders and companies alike on trends in ridesharing usage and to allow for further exploration of major trends.</p>
 
       <h1>Visualization</h1>
 
       <p>
-        Include the interactive visualization as part of this page. Static
-        example follows.
+        The following series of visualizations are intended to allow for the exploration of rideshare trends. The dataset is derived from a realistic simulation with nearly 700,000 rides. The following visualizations use a representative sample of that data.
       </p>
+
+      <p>
+        Surge multipliers and price are often indicators of demand in the rideshare business. Thus, we have decided to visualize certain factors versus surge multipliers & price to search for trends.
+      </p>
+
+      <p>
+        The below visualization is <b>interactive</b>. To change the middle and right scatter plots, use the drop-down menus found above the bar chart on the left. 
+      </p>
+
     </div>
 
 
 
     <!-- Visualization goes here -->
-    <div class = "vis-holder"> <div> </div>
-    <select id="selectButton1"></select> <div> </div>
+
+    
     <select id="selectButton2"></select>
-  </div>
 
     <div class="vis-holder">
 
@@ -100,10 +107,8 @@
     <div class='content-column'>
 
       <p>
-      <b>Hover over a day in the above bar chart (left) to explore price data for that day in the scatter plot (right).</b>
       	 The above visualization explores surge multiplier and price data for Lyft and Uber rides. From the visualizations, basic observation shows 
-      	 that there is not a significant difference in the average surge multiplier based on the day of the week. If surge multipliers are used as a proxy for demand, 
-      	 This indicates that while there may exist differences between demand at different times during the week, each day does not exhibit significantly higher or lower demand.
+      	 that there is not a significant difference in the average surge multiplier based on the day of the week. Observe the y-axis for the bar chart on the left -- we have zoomed in to show that the difference between each day is miniscule. This is likely because the vast majority of rides during any given day have a surge multiplier of '1x'. Thus, the average surge multiplier each day is cloes to 1. If surge multipliers are used as a proxy for demand, this indicates that while there may exist differences between demand at different times during the week, each day does not exhibit significantly higher or lower demand.
       	</br></br>
       	 Basic observation with the daily Price per Mile chart (right) shows that each day seems to exhibit similar price-per-mile distributions. 
       	 Additional statistical tests should be applied to determine the relationship between day, time, and price.
@@ -114,7 +119,7 @@
 
     </div>
 
-  <div class = "vis-holder"> <select id="selectButton3"></select></div>
+    <select id="selectButton3"></select>
     <div class="vis-holder">
       <div class="vis-holder" id="vis2"></div>
       <div class="vis-holder" id="vis2b"></div>
@@ -123,8 +128,7 @@
     <div class='content-column'>
 
       <p>
-        <b> Use the drop down to explore how the average surge multiplier (left) and the average price (right) differs with the different weather conditions</b>
-         These graphs show the average surge multiplier (left) and the average price (right) of all rides. This can be compared to different weather conditions using the drop down menu. We have zoomed in on the y-axis for both graphs as the changes between weather conditions are not vast from the average. Without having zoomed in these changes would not be visible. If surge multiplier is a proxy for demand, as stated for visualization 1, we can observe that there is not noticeable change in demand for different weather conditions. The average price also does not differ signifigantly over weather conditions. As we already know that surge multiplier does not change over weather conditions, any chance in price would be a reflection of differing distances traveled. Thus, as there is not change, we can hypothesize that there is not change in distance traveled with differing weather conditions. </br></br>
+         Above is visualization 2. Text will go here describing the visualization. </br></br>
       </p>
 
 
