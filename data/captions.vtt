@@ -1,0 +1,77 @@
+0:00:04.320,0:00:08.000
+Our group looked at a simulation of rideshares in the Boston area.
+
+0:00:08.902,0:00:12.552
+Purple dots will represent Lyfts and black dots will represent Uber.
+
+0:00:13.247,0:00:22.821
+Our first visualization shows how the average surge multiplier, the y-axis,  changes by day which is seen on the x-axis.
+
+0:00:23.715,0:00:30.000
+This can then be compared to the price per mile of a specific day, throughout that day.
+
+0:00:30.000,0:00:34.861
+The 24 hour time being on the x-axis and the price per mile on the y.
+
+0:00:35.297,0:00:38.315
+Days of the week may be changed using these drop downs.
+
+0:00:39.686,0:00:45.328
+Next, one can look at average surge multiplier and average prices for different weather conditions.
+
+0:00:45.659,0:00:50.432
+The overall average is always shown but the specific weather condition may be changed using this drop down.
+
+0:00:51.085,0:00:53.293
+The weather conditions are on the x-axis
+
+0:00:53.342,0:00:59.142
+and the y-axis shows either the surge multiplier for the left graph, or the price for the right graph.
+
+0:01:00.262,0:01:01.086
+Finally
+
+0:01:02.077,0:01:04.077
+This visualization shows three graphs
+
+0:01:04.077,0:01:08.097
+The first of which shows how the distance on the x-axis
+
+0:01:08.165,0:01:11.262
+changes with the price on the y-axis.
+
+0:01:11.418,0:01:13.936
+Each dot represents a ride.
+
+0:01:15.010,0:01:19.371
+The next scatterplot shows how the surge multiplier changes throughout November
+
+0:01:19.371,0:01:21.468
+and all the way through to December.
+
+0:01:21.920,0:01:23.920
+The date being on the x-axis
+
+0:01:24.001,0:01:26.001
+and the surge multiplier being on the y
+
+0:01:27.319,0:01:30.399
+Finally, there is a bar graph that shows how many rides
+
+0:01:31.725,0:01:33.725
+start in each region of Boston.
+
+0:01:34.041,0:01:37.577
+The regions are on the x-axis and the count of trips are on the y.
+
+0:01:39.002,0:01:41.581
+Highlighting over given points will illuminate
+
+0:01:41.581,0:01:44.424
+their corresponding ride on the other scatterplot
+
+0:01:44.611,0:01:46.137
+and also highlight
+
+0:01:46.289,0:01:48.851
+the starting locations of the rides selected.
