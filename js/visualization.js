@@ -1,45 +1,13 @@
+// read in data as example for PM06
+d3.csv("data/all_vis.csv").then((data) => {
+  //print data to log
+  console.log(data.slice(0, 10))
+})
 
 // Variables
 var margin = { top: 10, right: 30, bottom: 50, left: 60 },
   width = 460 - margin.left - margin.right,
   height = 450 - margin.top - margin.bottom
-
-
-// Add legend right at the beginning
-var svgLegend = d3
-  .select("#legend")
-  .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", 100)
-  .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
-svgLegend.append('circle')
-          .attr('cx', 0)
-          .attr('cy', 40)
-          .attr('r', 6)
-          .style('fill',"#000000")
-
-svgLegend.append('text')
-          .attr('x', 10)
-          .attr('y', 40)
-          .text("Uber")
-          .style("font-size", "15px")
-          .attr("alignment-baseline","middle")
-
-svgLegend.append('circle')
-          .attr('cx', 0)
-          .attr('cy', 60)
-          .attr('r', 6)
-          .style('fill',"#FF00BF")
-
-svgLegend.append('text')
-          .attr('x', 10)
-          .attr('y', 60)
-          .text("Lyft")
-          .style("font-size", "15px")
-          .attr("alignment-baseline","middle")
-
 
 // SPACE FOR VIS 1: BAR CHART AND SCATTER PLOT (JUSTIN)
 
@@ -93,45 +61,43 @@ d3.csv("data/all_vis.csv", function (row) {
     Distance: +row.distance,
   }
 }).then((data) => {
-  
+  //print data to log
+  console.log(data.slice(0, 10))
+
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
   // add options to the button
   d3.select("#selectButton1")
-    .selectAll("myOptions")
-    .data(days)
-    .enter()
-    .append("option")
-    .text(function (d) {
-      return d
-    })
-    .attr("value", function (d) {
-      draw_scatter1("Sun")
-      return d
-    })
-
+  	.selectAll('myOptions')
+  	.data(days)
+  	.enter()
+  		.append('option')
+  		.text(function(d) {return d;})
+  		.attr('value', function(d) {
+  			draw_scatter1('Sun')
+  			return d;})
+  
   // add listener
-  d3.select("#selectButton1").on("change", function (d) {
-    draw_scatter1(this.value)
-  })
+  d3.select('#selectButton1')
+  	.on('change', function(d){
+  			draw_scatter1(this.value)
+  		})
 
   // add options to the button
   d3.select("#selectButton2")
-    .selectAll("myOptions")
-    .data(days)
-    .enter()
-    .append("option")
-    .text(function (d) {
-      return d
-    })
-    .attr("value", function (d) {
-      draw_scatter2("Sun")
-      return d
-    })
+  	.selectAll('myOptions')
+  	.data(days)
+  	.enter()
+  		.append('option')
+  		.text(function(d) {return d;})
+  		.attr('value', function(d) {
+  			draw_scatter2('Sun')
+  			return d;})
 
-  d3.select("#selectButton2").on("change", function (d) {
-    draw_scatter2(this.value)
-  })
+  d3.select('#selectButton2')
+  	.on('change', function(d){
+  			draw_scatter2(this.value)
+  		})
 
   var bar_color = d3
     .scaleOrdinal()
@@ -158,13 +124,13 @@ d3.csv("data/all_vis.csv", function (row) {
     .append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(bar_xaxis))
-    .style("font", "12px sans-serif")
 
   var maxY = 1.016
   let yScale = d3.scaleLinear().domain([1.01, maxY]).range([height, 0])
 
   svg1
     .append("g")
+    .style("font", "13px times")
     .attr("transform", "translate(" + (margin.left - 60) + ",0)")
     .call(d3.axisLeft(yScale))
 
@@ -231,7 +197,7 @@ d3.csv("data/all_vis.csv", function (row) {
     .attr("fill", function (d) {
       return bar_color(d.Weekday)
     })
-
+   
   // add titles
   svg1
     .append("text")
@@ -259,7 +225,6 @@ d3.csv("data/all_vis.csv", function (row) {
           .attr("text-anchor", "start")
           .attr("transform", "rotate(-90)")
           .text("Price per Mile")
-          .style("font", "12px sans-serif")
       )
 
     // create X axis
@@ -278,7 +243,6 @@ d3.csv("data/all_vis.csv", function (row) {
           .attr("fill", "currentColor")
           .attr("text-anchor", "end")
           .text("24-Hour Time")
-          .style("font", "12px sans-serif")
       )
 
     //chart title
@@ -313,7 +277,7 @@ d3.csv("data/all_vis.csv", function (row) {
       .style("opacity", 0.5)
   }
 
-  function draw_scatter2(day) {
+function draw_scatter2(day) {
     svg2.selectAll("*").remove()
 
     let yScale1b = d3.scaleLinear().domain([0, 100]).range([height, 0])
@@ -331,7 +295,6 @@ d3.csv("data/all_vis.csv", function (row) {
           .attr("text-anchor", "start")
           .attr("transform", "rotate(-90)")
           .text("Price per Mile")
-          .style("font", "12px sans-serif")
       )
 
     // create X axis
@@ -350,7 +313,6 @@ d3.csv("data/all_vis.csv", function (row) {
           .attr("fill", "currentColor")
           .attr("text-anchor", "end")
           .text("24-Hour Time")
-          .style("font", "12px sans-serif")
       )
 
     //chart title
@@ -403,7 +365,7 @@ var svg3 = d3
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-var svg4 = d3
+  var svg4 = d3
   .select("#vis2b")
   .append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -411,181 +373,158 @@ var svg4 = d3
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
+
 d3.csv("data/vis2.csv", function (row) {
   // format the data
   return {
     Weather: row.weather,
     Price: +row.price,
-    Surge: +row.surge,
+    Surge: +row.surge
   }
 }).then((data) => {
+  console.log(data)
+
+    const weathers = ["MostlyCloudy", "Clear", "Overcast", "Drizzle", 
+    "PartlyCloudy", "LightRain", "Rain", "PossibleDrizzle", "Foggy"]
 
 
-  //weather options that will be displayed in the drop down
-  const weathers = [
-    "MostlyCloudy",
-    "Clear",
-    "Overcast",
-    "Drizzle",
-    "PartlyCloudy",
-    "LightRain",
-    "Rain",
-    "PossibleDrizzle",
-    "Foggy",
-  ]
-
-  // add options to the button, it will start on mostly cloudy
+      // add options to the button
   d3.select("#selectButton3")
-    .selectAll("myOptions")
+    .selectAll('myOptions')
     .data(weathers)
     .enter()
-    .append("option")
-    .text(function (d) {
-      return d
+      .append('option')
+      .text(function(d) {return d;})
+      .attr('value', function(d) {
+        draw_bar2('MostlyCloudy')
+        return d;})
+
+  
+  // add listener
+  d3.select('#selectButton3')
+    .on('change', function(d){
+        console.log(typeof this.value)
+        draw_bar2(this.value)
+
+      })
+
+
+ 
+
+function draw_bar2(w) {
+  var bar_color = d3
+    .scaleOrdinal()
+    .domain(["Average", "MostlyCloudy", "Clear", "Overcast", "Drizzle", 
+    "PartlyCloudy", "LightRain", "Rain", "PossibleDrizzle", "Foggy"])
+    .range(["#000000", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8", "#288BA8"])
+
+  svg3.selectAll("*").remove()
+  svg3.selectAll("axis").remove();
+
+  svg4.selectAll("*").remove()
+  svg4.selectAll("axis").remove();
+
+
+ var bar_xaxis = d3
+    .scaleBand()
+    .domain(["Average", w])
+    .range([0, width])
+
+  svg3
+    .append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(bar_xaxis))
+
+  let yScale = d3.scaleLinear().domain([1.0, 1.04]).range([height, 0])
+
+  svg3
+    .append("g")
+    .style("font", "13px times")
+    .attr("transform", "translate(" + (margin.left - 60) + ",0)")
+    .call(d3.axisLeft(yScale))
+
+  var bars = svg3
+    .selectAll(".bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .filter(function (d) {
+      return d.Weather == "Average" || d.Weather == w
     })
-    .attr("value", function (d) {
-      draw_bar2("MostlyCloudy")
-      return d
+    .attr("x", function (d) {
+      return bar_xaxis(d.Weather) + 10
+    })
+    .attr("y", function (d) {
+      return yScale(d.Surge)
+    })
+    .attr("width", bar_xaxis.bandwidth() - 20)
+    .attr("height", (d) => height - yScale(d.Surge))
+    .attr("fill", function (d) {
+      return bar_color(d.Weather)
     })
 
-  // add listener to the select button
-  d3.select("#selectButton3").on("change", function (d) {
-    draw_bar2(this.value)
-  })
+  svg3.append("text")
+  .attr("text-anchor", "middle")
+  .attr("x", width / 2)
+  .attr("y", 10)
+  .text("Average Surge Multiplier")
+  .attr("font-weight", 700)
 
-  //draw the correct bar graph
-  function draw_bar2(w) {
-    //bar colors .. all will be blue except the average which will be black
-    var bar_color = d3
-      .scaleOrdinal()
-      .domain([
-        "Average",
-        "MostlyCloudy",
-        "Clear",
-        "Overcast",
-        "Drizzle",
-        "PartlyCloudy",
-        "LightRain",
-        "Rain",
-        "PossibleDrizzle",
-        "Foggy",
-      ])
-      .range([
-        "#000000",
-        "#288BA8",
-        "#288BA8",
-        "#288BA8",
-        "#288BA8",
-        "#288BA8",
-        "#288BA8",
-        "#288BA8",
-        "#288BA8",
-        "#288BA8",
-      ])
 
-    //clear old data and axis
-    svg3.selectAll("*").remove()
-    svg3.selectAll("axis").remove()
+  svg4
+    .append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(bar_xaxis))
 
-    svg4.selectAll("*").remove()
-    svg4.selectAll("axis").remove()
+  let yScale2 = d3.scaleLinear().domain([16, 17]).range([height, 0])
 
-    //create x-axis (same for both graphs)
-    var bar_xaxis = d3.scaleBand().domain(["Average", w]).range([0, width])
+  svg4
+    .append("g")
+    .style("font", "13px times")
+    .attr("transform", "translate(" + (margin.left - 60) + ",0)")
+    .call(d3.axisLeft(yScale2))
 
-    //attach x-axis
-    svg3
-      .append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(bar_xaxis))
-      .style("font", "12px sans-serif")
+  var bars = svg4
+    .selectAll(".bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .filter(function (d) {
+      return d.Weather == "Average" || d.Weather == w
+    })
+    .attr("x", function (d) {
+      return bar_xaxis(d.Weather) + 10
+    })
+    .attr("y", function (d) {
+      return yScale2(d.Price)
+    })
+    .attr("width", bar_xaxis.bandwidth() - 20)
+    .attr("height", (d) => height - yScale2
+      (d.Price))
+    .attr("fill", function (d) {
+      return bar_color(d.Weather)
+    })
 
-    //create and attach y axis
-    let yScale = d3.scaleLinear().domain([1.0, 1.04]).range([height, 0])
 
-    svg3
-      .append("g")
-      .attr("transform", "translate(" + (margin.left - 60) + ",0)")
-      .call(d3.axisLeft(yScale))
+svg4
+  .append("text")
+  .attr("text-anchor", "middle")
+  .attr("x", width / 2)
+  .attr("y", 10)
+  .text("Average Price")
+  .attr("font-weight", 700)
 
-    //create bars for the surge multiplier graph, filtering by weather condition, where w is the user selected weather condition
-    var bars = svg3
-      .selectAll(".bar")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("class", "bar")
-      .filter(function (d) {
-        return d.Weather == "Average" || d.Weather == w
-      })
-      .attr("x", function (d) {
-        return bar_xaxis(d.Weather) + 10
-      })
-      .attr("y", function (d) {
-        return yScale(d.Surge)
-      })
-      .attr("width", bar_xaxis.bandwidth() - 20)
-      .attr("height", (d) => height - yScale(d.Surge))
-      .attr("fill", function (d) {
-        return bar_color(d.Weather)
-      })
-
-    //add a title to the surge multiplier graph
-    svg3
-      .append("text")
-      .attr("text-anchor", "middle")
-      .attr("x", width / 2)
-      .attr("y", 10)
-      .text("Average Surge Multiplier")
-      .attr("font-weight", 700)
-
-    //append the x-axis to the price graph
-    svg4
-      .append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(bar_xaxis))
-      .style("font", "12px sans-serif")
-
-    //create and attach the y-axis to the price graph
-    let yScale2 = d3.scaleLinear().domain([16, 17]).range([height, 0])
-
-    svg4
-      .append("g")
-      .attr("transform", "translate(" + (margin.left - 60) + ",0)")
-      .call(d3.axisLeft(yScale2))
-
-    //draw bars for the price graph, filtering by the correct weather condition, where w is the user selected condition
-    var bars = svg4
-      .selectAll(".bar")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("class", "bar")
-      .filter(function (d) {
-        return d.Weather == "Average" || d.Weather == w
-      })
-      .attr("x", function (d) {
-        return bar_xaxis(d.Weather) + 10
-      })
-      .attr("y", function (d) {
-        return yScale2(d.Price)
-      })
-      .attr("width", bar_xaxis.bandwidth() - 20)
-      .attr("height", (d) => height - yScale2(d.Price))
-      .attr("fill", function (d) {
-        return bar_color(d.Weather)
-      })
-
-    //add a title to the price graph
-    svg4
-      .append("text")
-      .attr("text-anchor", "middle")
-      .attr("x", width / 2)
-      .attr("y", 10)
-      .text("Average Price")
-      .attr("font-weight", 700)
-  }
+}
+ 
 })
+
+
+
+
+
+
 
 // END OF SPACE FOR VIS 2
 
@@ -649,21 +588,7 @@ d3.csv("data/all_vis.csv", function (row) {
         .attr("fill", "currentColor")
         .attr("text-anchor", "end")
         .text("Distance")
-        .style("font", "12px sans-serif")
     )
-
-    // chart title
-    svg5
-      .append("text")
-      .attr("text-anchor", "middle")
-      .attr("x", width / 2)
-      .attr("y", 5)
-      .text('Price vs. Distance')
-      .attr("font-weight", 700)
-      .style('fill', 'black')
-
-
-
 
   //Add Y axis
   let y5 = d3.scaleLinear().domain([0, 68]).range([height, 0])
@@ -679,9 +604,7 @@ d3.csv("data/all_vis.csv", function (row) {
         .attr("fill", "currentColor")
         .attr("text-anchor", "start")
         .text("Price")
-        .style("font", "12px sans-serif")
     )
-    
 
   // Add dots
   var myCircle5 = svg5
@@ -703,6 +626,7 @@ d3.csv("data/all_vis.csv", function (row) {
     })
     .style("opacity", 0.5)
 
+
   // Define a brush
   var brush1 = d3
     .brush() // Add the brush feature using the d3.brush function
@@ -715,8 +639,6 @@ d3.csv("data/all_vis.csv", function (row) {
 
   // Add brush to the svg
   svg5.call(brush1)
-
-  
 
   // Scatterplot 2
   var xKey6 = "date"
@@ -747,18 +669,8 @@ d3.csv("data/all_vis.csv", function (row) {
         .text("Date")
     )
 
-  // chart title
-    svg6
-      .append("text")
-      .attr("text-anchor", "middle")
-      .attr("x", width / 2 +10)
-      .attr("y", 5)
-      .text('Surge Multiplier (November to December)')
-      .attr("font-weight", 700)
-      .style('fill', 'black')
-
   //Add Y axis
-  let y6 = d3.scaleLinear().domain([0, 3]).range([height, 0])
+  let y6 = d3.scaleLinear().domain([1, 2]).range([height, 0])
 
   svg6
     .append("g")
@@ -770,8 +682,8 @@ d3.csv("data/all_vis.csv", function (row) {
         .attr("y", -30)
         .attr("fill", "currentColor")
         .attr("text-anchor", "start")
-        .text("Surge")
-        .style("font", "12px sans-serif")
+        .attr("transform", "rotate(-90)")
+        .text("Surge Multiplier")
     )
 
   // Add dots
@@ -809,6 +721,7 @@ d3.csv("data/all_vis.csv", function (row) {
 
   // Bar Chart
   var dataNest = d3.group(data, (d) => d.source)
+  console.log(dataNest)
 
   // Add X axis
   let x = d3
@@ -835,24 +748,23 @@ d3.csv("data/all_vis.csv", function (row) {
         .text("Starting Location")
     )
 
-    svg7
-      .append("text")
-      .attr("text-anchor", "middle")
-      .attr("x", width / 2 +10)
-      .attr("y", 10)
-      .text('Count of Trips by Starting Location')
-      .attr("font-weight", 700)
-      .style('fill', 'black')
-
   // Add Y axis
   let y = d3
     .scaleLinear()
     .range([height, 0])
-    .domain([0, 700])
+    .domain([0, d3.max(dataNest, (d) => d[1].length)])
   svg7
     .append("g")
     .call(d3.axisLeft(y))
-    
+    .call((g) =>
+      g
+        .append("text")
+        .attr("x", -margin.left)
+        .attr("y", 10)
+        .attr("fill", "currentColor")
+        .attr("text-anchor", "start")
+        .text("Count")
+    )
 
   // Add bars
   let bars = svg7
@@ -878,13 +790,13 @@ d3.csv("data/all_vis.csv", function (row) {
 
   //Is called when we brush on scatterplot #1
   function updateChart1(brushEvent) {
-    extent = brushEvent.selection
+    extent = brushEvent.selection;
     var selectedRides = new Set()
 
     // Check all the circles that are within the brush region in Scatterplot 1
     myCircle5.classed("selected", function (d) {
-      return isBrushed(extent, x5(d.distance), y5(d.price))
-    })
+      return isBrushed(extent, x5(d.distance), y5(d.price));
+    });
 
     // Select all the data points in Scatterplot 2 which have the same id as those selected in Scatterplot 1
     myCircle6.classed("selected", function (d) {
@@ -902,6 +814,7 @@ d3.csv("data/all_vis.csv", function (row) {
     bars.classed("selected", function (d) {
       return selectedRides.has(d[0])
     })
+
   }
 
   //Is called when we brush on scatterplot #2
@@ -941,3 +854,4 @@ d3.csv("data/all_vis.csv", function (row) {
 })
 
 // END OF SPACE FOR VIS 3
+
